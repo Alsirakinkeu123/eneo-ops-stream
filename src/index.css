@@ -2,41 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* ENEO Operations Hub Design System
+All colors MUST be HSL. Following ENEO brand identity.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ENEO Brand Colors */
+    --background: 210 40% 98%;           /* Fond blanc cassé */
+    --foreground: 215 28% 17%;           /* Texte gris foncé */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;                   /* Fond cartes blanc pur */
+    --card-foreground: 215 28% 17%;      /* Texte cartes */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 28% 17%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 207 100% 35%;             /* Bleu ENEO principal */
+    --primary-foreground: 0 0% 100%;     /* Texte sur bleu */
+    --primary-hover: 207 100% 30%;       /* Bleu hover plus foncé */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 40% 96%;            /* Gris clair pour éléments secondaires */
+    --secondary-foreground: 215 28% 17%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --success: 142 71% 45%;              /* Vert ENEO pour succès */
+    --success-foreground: 0 0% 100%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --warning: 38 92% 50%;               /* Orange pour warnings */
+    --warning-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --error: 0 84% 60%;                  /* Rouge pour erreurs */
+    --error-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --muted: 210 40% 94%;                /* Backgrounds atténués */
+    --muted-foreground: 215 16% 47%;     /* Texte atténué */
 
-    --radius: 0.5rem;
+    --accent: 142 71% 45%;               /* Vert ENEO pour accents */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;               /* Bordures subtiles */
+    --input: 220 13% 91%;
+    --ring: 207 100% 35%;                /* Focus ring bleu ENEO */
+
+    --radius: 0.75rem;                   /* Bordures arrondies modernes */
+
+    /* ENEO Status Colors */
+    --status-pending: 38 92% 50%;        /* Orange pour en attente */
+    --status-in-progress: 207 100% 35%;  /* Bleu pour en cours */
+    --status-completed: 142 71% 45%;     /* Vert pour terminé */
+    --status-cancelled: 0 84% 60%;       /* Rouge pour annulé */
+
+    /* Agent Status */
+    --agent-online: 142 71% 45%;         /* Vert pour en ligne */
+    --agent-offline: 215 16% 47%;        /* Gris pour hors ligne */
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(207, 100%, 35%), hsl(207, 100%, 45%));
+    --gradient-success: linear-gradient(135deg, hsl(142, 71%, 45%), hsl(142, 71%, 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(207, 100%, 35%), hsl(142, 71%, 45%));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(207 100% 35% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(207 100% 35% / 0.1), 0 2px 4px -1px hsl(207 100% 35% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(207 100% 35% / 0.1), 0 4px 6px -2px hsl(207 100% 35% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(207 100% 35% / 0.1), 0 10px 10px -5px hsl(207 100% 35% / 0.04);
+
+    /* Transitions */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +138,143 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Status Badges */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors;
+  }
+  
+  .status-pending {
+    @apply bg-orange-100 text-orange-800 border border-orange-200;
+  }
+  
+  .status-in-progress {
+    @apply bg-blue-100 text-blue-800 border border-blue-200;
+  }
+  
+  .status-completed {
+    @apply bg-green-100 text-green-800 border border-green-200;
+  }
+  
+  .status-cancelled {
+    @apply bg-red-100 text-red-800 border border-red-200;
+  }
+
+  /* Agent Status Indicators */
+  .agent-online {
+    @apply bg-green-500;
+  }
+  
+  .agent-offline {
+    @apply bg-gray-400;
+  }
+
+  /* Glass Effect Panels */
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
+
+  /* Smooth Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/25;
+  }
+}
+
+@layer utilities {
+  /* Custom Gradients */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+  
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  /* Custom Shadows */
+  .shadow-eneo-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-eneo-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-eneo-lg {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .shadow-eneo-xl {
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* Transitions */
+  .transition-eneo-fast {
+    transition: var(--transition-fast);
+  }
+  
+  .transition-eneo {
+    transition: var(--transition-normal);
+  }
+  
+  .transition-eneo-slow {
+    transition: var(--transition-slow);
+  }
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
