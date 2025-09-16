@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { 
@@ -17,6 +18,8 @@ import {
 import { useAppStore } from '../../store/useAppStore';
 
 const Sidebar: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { sidebarCollapsed, toggleSidebar, interventions, agents } = useAppStore();
 
   // Calcul des statistiques pour les badges
@@ -28,30 +31,38 @@ const Sidebar: React.FC = () => {
     {
       icon: Map,
       label: 'Carte & Interventions',
-      active: true,
+      path: '/',
       badge: pendingInterventions + inProgressInterventions,
     },
     {
       icon: Users,
       label: 'Gestion Agents',
-      active: false,
+      path: '/agents',
       badge: onlineAgents,
     },
     {
       icon: Activity,
       label: 'Statistiques',
-      active: false,
+      path: '/statistics',
     },
     {
       icon: Settings,
       label: 'Paramètres',
-      active: false,
+      path: '/settings',
     },
   ];
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    // Fermer la sidebar sur mobile après navigation
+    if (window.innerWidth < 1024 && !sidebarCollapsed) {
+      toggleSidebar();
+    }
+  };
+
   return (
     <motion.aside
-      className="bg-card border-r border-border shadow-lg relative z-10"
+      className="bg-card border-r border-border shadow-lg h-screen"
       initial={{ width: sidebarCollapsed ? 80 : 280 }}
       animate={{ width: sidebarCollapsed ? 80 : 280 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -95,11 +106,12 @@ const Sidebar: React.FC = () => {
                   transition={{ delay: index * 0.1 + 0.2 }}
                 >
                   <Button
-                    variant={item.active ? "default" : "ghost"}
+                    variant={location.pathname === item.path ? "default" : "ghost"}
                     size="lg"
+                    onClick={() => handleNavigation(item.path)}
                     className={`w-full justify-start gap-3 transition-eneo ${
                       sidebarCollapsed ? 'px-3' : 'px-4'
-                    } ${item.active ? 'gradient-primary text-white shadow-md' : 'hover:bg-secondary'}`}
+                    } ${location.pathname === item.path ? 'gradient-primary text-white shadow-md' : 'hover:bg-secondary'}`}
                   >
                     <Icon className={`h-5 w-5 ${sidebarCollapsed ? 'mx-auto' : ''}`} />
                     {!sidebarCollapsed && (
@@ -107,7 +119,7 @@ const Sidebar: React.FC = () => {
                         <span className="flex-1 text-left">{item.label}</span>
                         {item.badge !== undefined && item.badge > 0 && (
                           <Badge 
-                            variant={item.active ? "secondary" : "outline"} 
+                            variant={location.pathname === item.path ? "secondary" : "outline"} 
                             className="ml-auto text-xs"
                           >
                             {item.badge}

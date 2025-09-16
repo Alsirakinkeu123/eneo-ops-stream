@@ -65,34 +65,43 @@ const Dashboard: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="h-full grid grid-cols-12 gap-6">
-        {/* Colonne Gauche - Listes */}
+      <div className="h-full flex flex-col lg:grid lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
+        {/* Sur mobile: Layout vertical empilé */}
+        {/* Sur desktop: Layout en colonnes */}
+        
+        {/* Colonne Gauche - Listes (Responsive) */}
         <motion.div 
-          className="col-span-3 space-y-6"
+          className="lg:col-span-3 space-y-3 sm:space-y-4 lg:space-y-6 order-2 lg:order-1"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
         >
           <InterventionsList />
-          <AgentsList />
+          <div className="hidden sm:block">
+            <AgentsList />
+          </div>
         </motion.div>
 
-        {/* Colonne Centrale - Carte */}
+        {/* Colonne Centrale - Carte (Responsive) */}
         <motion.div 
-          className={`${detailsPanelOpen ? 'col-span-6' : 'col-span-9'} transition-all duration-300`}
+          className={`order-1 lg:order-2 ${
+            detailsPanelOpen 
+              ? 'lg:col-span-6' 
+              : 'lg:col-span-9'
+          } transition-all duration-300`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <div className="h-full min-h-[600px] bg-card rounded-xl border border-border shadow-eneo-md overflow-hidden">
+          <div className="h-64 sm:h-80 lg:h-full lg:min-h-[600px] bg-card rounded-xl border border-border shadow-eneo-md overflow-hidden">
             <GoogleMapsContainer />
           </div>
         </motion.div>
 
-        {/* Colonne Droite - Panneau de Détails */}
+        {/* Colonne Droite - Panneau de Détails (Responsive) */}
         {detailsPanelOpen && (
           <motion.div 
-            className="col-span-3"
+            className="lg:col-span-3 order-3 max-h-96 lg:max-h-none overflow-hidden"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
@@ -100,6 +109,13 @@ const Dashboard: React.FC = () => {
           >
             <DetailsPanel />
           </motion.div>
+        )}
+
+        {/* Agents List sur mobile seulement si pas de panneau détails */}
+        {!detailsPanelOpen && (
+          <div className="sm:hidden order-4">
+            <AgentsList />
+          </div>
         )}
       </div>
     </DashboardLayout>

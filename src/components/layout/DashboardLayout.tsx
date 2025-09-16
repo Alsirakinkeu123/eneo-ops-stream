@@ -15,18 +15,33 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { sidebarCollapsed } = useAppStore();
 
   return (
-    <div className="min-h-screen bg-background w-full flex">
-      {/* Sidebar Fixe */}
-      <Sidebar />
+    <div className="min-h-screen bg-background w-full flex relative">
+      {/* Overlay pour mobile quand sidebar ouverte */}
+      {!sidebarCollapsed && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => {}} // Sera géré par le store
+        />
+      )}
+      
+      {/* Sidebar avec gestion mobile */}
+      <div className={`
+        fixed lg:relative z-50 lg:z-auto
+        ${sidebarCollapsed ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'}
+        transition-transform duration-300 ease-in-out
+        lg:transition-none
+      `}>
+        <Sidebar />
+      </div>
       
       {/* Zone de Contenu Principale */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <Header />
         
-        {/* Contenu Principal avec Animation */}
+        {/* Contenu Principal avec Animation et Responsivité */}
         <motion.main 
-          className="flex-1 p-6 overflow-hidden"
+          className="flex-1 p-3 sm:p-4 lg:p-6 overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
